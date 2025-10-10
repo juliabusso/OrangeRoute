@@ -4,6 +4,7 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-nat
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
+
 export default function CadastroScreen() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
