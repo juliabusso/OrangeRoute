@@ -1,43 +1,66 @@
-
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
-
-  useEffect(() => {
-    // Se já estiver logado (Neste caso, está mockado), vá para a home
-    (async () => {
-      const logged = await AsyncStorage.getItem('@isLogged');
-      if (logged === 'true') router.replace('/home');
-    })();
-  }, []);
+export default function LoginScreen({ navigation }) {
+  const [name, setName] = useState('');
 
   const handleLogin = async () => {
-    // mock auth: apenas salva flag e vai pra home
-    await AsyncStorage.setItem('@isLogged', 'true');
-    router.replace('/home');
+    if (name.trim()) {
+      await AsyncStorage.setItem('@user_name', name);
+      navigation.replace('Home');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo</Text>
-      <TextInput placeholder="Email" style={styles.input} value={email} onChangeText={setEmail} />
-      <TextInput placeholder="Senha" secureTextEntry style={styles.input} value={password} onChangeText={setPassword} />
-      <Button title="Entrar" onPress={handleLogin} />
-      <TouchableOpacity onPress={() => router.push('/cadastro')}>
-        <Text style={styles.link}>Criar conta</Text>
+      <Text style={styles.title}>OrangeRoute</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite seu nome..."
+        value={name}
+        onChangeText={setName}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  container: { flex:1, padding:20, justifyContent:'center' },
-  title: { fontSize:28, fontWeight:'700', marginBottom:20 },
-  input: { borderWidth:1, borderColor:'#CBD5E1', padding:10, borderRadius:8, marginBottom:12, backgroundColor:'#fff' },
-  link: { color:'#2563EB', marginTop:12, textAlign:'center' }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF4E6',
+    padding: 20,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#FF6B00',
+    marginBottom: 24,
+  },
+  input: {
+    width: '90%',
+    height: 50,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    marginBottom: 20,
+    borderColor: '#FF6B00',
+    borderWidth: 1,
+  },
+  button: {
+    backgroundColor: '#FF6B00',
+    paddingVertical: 14,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 18,
+  },
 });

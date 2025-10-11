@@ -37,11 +37,11 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={{ padding:16 }}>
-      <View style={{ flexDirection:'row', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
-        <Text style={{ fontSize:22, fontWeight:'700' }}>Áreas</Text>
+    <ScrollView style={{ padding: 16 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+        <Text style={{ fontSize: 22, fontWeight: '700' }}>Áreas</Text>
         <TouchableOpacity onPress={() => { AsyncStorage.removeItem('@isLogged'); router.replace('/'); }}>
-          <Text style={{ color:'#EF4444' }}>Sair</Text>
+          <Text style={{ color: '#EF4444' }}>Sair</Text>
         </TouchableOpacity>
       </View>
 
@@ -49,7 +49,7 @@ export default function HomeScreen() {
 
       {areas.map(area => (
         <AreaCard key={area.id} area={area}>
-          <TouchableOpacity onPress={() => toggleFav(area.id)} style={{ marginLeft:8 }}>
+          <TouchableOpacity onPress={() => toggleFav(area.id)} style={{ marginLeft: 8 }}>
             <Text style={{ color: favorites[area.id] ? '#F59E0B' : '#94A3B8' }}>
               {favorites[area.id] ? '★ Favorito' : '☆ Favoritar'}
             </Text>
