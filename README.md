@@ -31,7 +31,10 @@ ________________________________________________________________________________
 
 ▶️ Como executar
 # Instalar dependências
-npm install
+npm i
+npm install @react-navigation/native @react-navigation/native-stack
+npx expo install react-native-screens react-native-safe-area-context
+npx expo install @react-native-async-storage/async-storage
 
 # Rodar o projeto
 npx expo start
