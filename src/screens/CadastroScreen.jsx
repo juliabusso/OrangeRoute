@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function CadastroScreen() {
@@ -33,7 +33,7 @@ export default function CadastroScreen() {
   const handleSubmit = async () => {
     // item mockado: "criar conta" salva isLogged e vai pra home
     await AsyncStorage.setItem('@isLogged', 'true');
-    router.replace('/home');
+    navigation.replace('/home');
   };
 
   const handleClear = async () => {

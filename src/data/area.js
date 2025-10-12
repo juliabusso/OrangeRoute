@@ -1,5 +1,5 @@
 // src/data/area.js
-export const areas = [
+export const area = [
     {
       id: '1',
       nome: 'Front-end',
