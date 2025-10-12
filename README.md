@@ -32,8 +32,11 @@ ________________________________________________________________________________
 ▶️ Como executar
 # Instalar dependências
 npm i
+
 npm install @react-navigation/native @react-navigation/native-stack
+
 npx expo install react-native-screens react-native-safe-area-context
+
 npx expo install @react-native-async-storage/async-storage
 
 # Rodar o projeto
@@ -65,3 +68,5 @@ src/
  ├─ screens/           → Telas principais do app  
  └─ AppNavigator.jsx   → Gerencia a navegação principal
 App.tsx                → Ponto de entrada do app
+
+[Vídeo do youtube do projeto](https://youtube.com/shorts/86VVRIoiQTE)
