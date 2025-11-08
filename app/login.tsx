@@ -1,14 +1,17 @@
+// app/login.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
   const [name, setName] = useState('');
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (name.trim()) {
       await AsyncStorage.setItem('@user_name', name);
-      navigation.replace('Home');
+      router.replace('/home'); // Navega para a tela Home usando Expo Router
     }
   };
 

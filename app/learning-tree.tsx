@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { area as areas } from '../data/area'; // ajuste o caminho conforme sua estrutura
+import { useLocalSearchParams } from 'expo-router'; // <--- aqui
+import { area as areas } from '../data/area';
 
 export default function AreaDetail() {
-  const route = useRoute();
-  const { id } = route.params;
+  const params = useLocalSearchParams(); // <--- aqui
+  const { id } = params as { id: string }; // opcionalmente forçar o tipo
 
   const area = areas.find(a => a.id === id);
 
@@ -39,36 +39,14 @@ export default function AreaDetail() {
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  center: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  desc: {
-    fontSize: 16,
-    color: '#475569',
-    marginBottom: 12,
-  },
-  subTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginTop: 12,
-    marginBottom: 6,
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12,
-  },
+  container: { padding: 16 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 22, fontWeight: '700', marginBottom: 8 },
+  desc: { fontSize: 16, color: '#475569', marginBottom: 12 },
+  subTitle: { fontSize: 18, fontWeight: '600', marginTop: 12, marginBottom: 6 },
+  tagsContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 12 },
   tag: {
     backgroundColor: '#E0E7FF',
     color: '#1E3A8A',
@@ -78,8 +56,5 @@ const styles = StyleSheet.create({
     marginRight: 6,
     marginBottom: 6,
   },
-  step: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
+  step: { fontSize: 16, marginBottom: 4 },
 });

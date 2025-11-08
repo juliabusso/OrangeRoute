@@ -1,48 +1,56 @@
+// app/home.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
-import { area as areasData } from '../data/area';
-import AreaCard from '../components/AreaCard';
-import SearchBar from '../components/SearchBar';
+import { area as areasData } from '../../data/area';
+import AreaCard from '../../components/areaCard';
+import SearchBar from '../../components/searchBar';
 
 export default function HomeScreen() {
   const [query, setQuery] = useState('');
   const [areas, setAreas] = useState(areasData);
-  const [favorites, setFavorites] = useState({});
-  const navigation = useNavigation();
+  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+  const router = useRouter();
 
+  // Carregar favoritos do AsyncStorage
   useEffect(() => {
     (async () => {
       const favJson = await AsyncStorage.getItem('@favorites');
-      if (favJson) setFavorites(JSON.parse(favJson));
+      if (favJson) {
+        setFavorites(JSON.parse(favJson));
+      }
     })();
   }, []);
 
+  // Filtrar áreas com base na query
   useEffect(() => {
     if (!query) {
       setAreas(areasData);
     } else {
       const q = query.toLowerCase();
       setAreas(
-        areasData.filter(a =>
-          a.nome.toLowerCase().includes(q) ||
-          a.tecnologias.join(' ').toLowerCase().includes(q)
+        areasData.filter(
+          (a) =>
+            a.nome.toLowerCase().includes(q) ||
+            a.tecnologias.join(' ').toLowerCase().includes(q)
         )
       );
     }
   }, [query]);
 
-  const toggleFav = async (id) => {
+  // Alternar favorito
+  const toggleFav = async (id: string) => {
     const next = { ...favorites, [id]: !favorites[id] };
     setFavorites(next);
     await AsyncStorage.setItem('@favorites', JSON.stringify(next));
   };
 
+  // Logout
   const handleLogout = async () => {
     await AsyncStorage.removeItem('@isLogged');
-    navigation.replace('Login'); // navega para a tela de Login
+    router.replace('/login'); // Expo Router
   };
 
   return (

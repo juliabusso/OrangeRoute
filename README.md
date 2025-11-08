@@ -1,72 +1,50 @@
-# Projeto OrangeRoute
-## Tecnologias Usadas
+# Welcome to your Expo app 👋
 
-<div style="display: inline_block"><br> 
-  <img aling="center" src="https://img.shields.io/badge/Mobile-ED8B00?style=for-the-badge&logo=mobile&logoColor=white"/>
-</div>
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## INTEGRANTES
-### Jhonantan Quispe Torrez
-[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-)](https://www.linkedin.com/in/jhonatan-quispe-torrez-360b60198/)[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JhowQT)
-### Julia Damasceno Busso
-[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-)](https://www.linkedin.com/in/jhonatan-quispe-torrez-360b60198/)[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JhowQT)
-### Gabriel Gomes
-[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-)](https://www.linkedin.com/in/jhonatan-quispe-torrez-360b60198/)[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JhowQT)
+## Get started
 
-**Jhonatan Quispe Torrez — Java & Banco de Dados**
+1. Install dependencies
 
-`Responsável pelo backend em Java/Spring Boot e pela modelagem relacional no Oracle. Implementou Entities com JPA/Hibernate, Services/Repositories e endpoints REST, além da configuração de persistência, testes de API (Postman) e documentação Swagger.`
+   ```bash
+   npm install
+   ```
 
-**Gabriel Gomes — Advanced Business Development with .NET & DevOps/Cloud**
+2. Start the app
 
-`Responsável pelo desenho de arquitetura .NET (camadas, DTOs, Repositórios) e boas práticas de Clean Architecture. No pilar DevOps & Cloud, cuidou de Docker/Docker Compose, organização de CI/CD, e provisionamento/ajustes de infraestrutura em nuvem para deploy e observabilidade.`
+   ```bash
+   npx expo start
+   ```
 
-**Julia Busso — Mobile App Development & Compliance & QA**
+In the output, you'll find options to open the app in a
 
-`Responsável pelo app mobile (React Native/Expo), navegação entre telas, integração com a API e protótipo funcional. No pilar Compliance & Quality Assurance, estruturou a documentação de escopo/visão, critérios de qualidade, e evidências para validação das entregas.`
-_____________________________________________________________________________________________________
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-▶️ Como executar
-# Instalar dependências
-npm i
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-npm install @react-navigation/native @react-navigation/native-stack
+## Get a fresh project
 
-npx expo install react-native-screens react-native-safe-area-context
+When you're ready, run:
 
-npx expo install @react-native-async-storage/async-storage
+```bash
+npm run reset-project
+```
 
-# Rodar o projeto
-npx expo start
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
+## Learn more
 
-🧩 Visão Geral
+To learn more about developing your project with Expo, look at the following resources:
 
-Criada como formato de auxiliar pessoas interassadas no mundo da programação, 
-tendo como fito mostrar s tendências do mercadod as areas que um programador deve
-conhecer, tendo guias para auxiliar o usuario nas escolhas da máteria. Assim sendo,
-e um facilitador para que qualquer um trilha nos codigos e tecnologia.
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-📱 Funcionalidades
+## Join the community
 
-Navegação entre múltiplas telas (Login, Cadastro, Home, LearningTree)
+Join our community of developers creating universal apps.
 
-Formulário funcional com controle de estado (useState)
-
-Armazenamento local de dados com AsyncStorage
-
-Layout simples e responsivo
-
-🧩 Estrutura do Projeto
-src/
- ├─ components/        → Componentes reutilizáveis  
- ├─ data/              → Dados mockados  
- ├─ navigation/        → Configuração do React Navigation  
- ├─ screens/           → Telas principais do app  
- └─ AppNavigator.jsx   → Gerencia a navegação principal
-App.tsx                → Ponto de entrada do app
-
-[Vídeo do youtube do projeto](https://youtube.com/shorts/86VVRIoiQTE)
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
