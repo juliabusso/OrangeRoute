@@ -11,7 +11,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = 'http://192.168.0.30:8080';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -59,7 +59,7 @@ export default function LoginScreen() {
     ]);
 
     Alert.alert('Bem-vindo!', `Olá, ${usuario.nomeUsuario}!`);
-    router.replace('../index.tsx'); 
+    router.replace('../(auth)/trilhas'); 
     setMensagem('Erro ao conectar com o servidor. Verifique se o back-end está rodando.');
   } finally {
     setLoading(false);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = '';
 
 export default function CadastroScreen() {
   const [nomeUsuario, setNomeUsuario] = useState('');

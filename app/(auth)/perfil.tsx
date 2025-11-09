@@ -14,7 +14,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = '';
 
 export default function ProfileScreen() {
   const [usuario, setUsuario] = useState<any>(null);

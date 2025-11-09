@@ -23,7 +23,7 @@ export default function TrilhasScreen() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const API_URL = 'http://localhost:8080/trilhas';
+  const API_URL = '';
 
   useEffect(() => {
     const carregar = async () => {
@@ -41,7 +41,7 @@ export default function TrilhasScreen() {
     carregar();
   }, []);
 
-  const abrirTrilha = (id: string) => router.push(`./trilha/${id}`);
+  const abrirTrilha = (id: string) => router.push(`../trilha/${id}`);
 
   const icone = (titulo: string) => {
     const t = titulo.toLowerCase();
