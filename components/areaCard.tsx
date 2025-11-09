@@ -27,7 +27,7 @@ export default function AreaCard({ area, children }: AreaCardProps) {
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.linkBtn}
-          onPress={() => router.push(`/learning-tree?id=${area.id}`)}
+          onPress={() => router.push(`./learning-tree?id=${area.id}`)}
         >
           <Text style={{ color: '#fff' }}>Ver trilha</Text>
         </TouchableOpacity>

@@ -16,7 +16,7 @@ const Colors = {
   },
 };
 
-export default function AuthLayout() {
+export default function AuthTabsLayout() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
 
@@ -40,21 +40,29 @@ export default function AuthLayout() {
       }}
     >
       <Tabs.Screen
-        name="login"
+        name="trilhas"
         options={{
-          title: 'Login',
+          title: 'Trilhas',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'log-in' : 'log-in-outline'} size={24} color={color} />
+            <Ionicons
+              name={focused ? 'map' : 'map-outline'}
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="cadastro"
+        name="perfil"
         options={{
-          title: 'Cadastro',
+          title: 'Perfil',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person-add' : 'person-add-outline'} size={24} color={color} />
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={24}
+              color={color}
+            />
           ),
         }}
       />
