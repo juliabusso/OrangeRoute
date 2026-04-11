@@ -20,6 +20,21 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+type LoginResponse = {
+  token: string;
+  usuario: {
+    idUsuario: number;
+    nomeUsuario: string;
+    email: string;
+    ativo: string; 
+    tipoUsuario: {
+      idTipoUsuario: number;
+      nomeTipoUsuario: string;
+    };
+  };
+  message?: string;
+};
+
   const handleLogin = async () => {
   if (!email || !senha) {
     setMensagem('Preencha todos os campos.');
@@ -36,20 +51,19 @@ export default function LoginScreen() {
       body: JSON.stringify({ email, senha }),
     });
 
-    let data = {};
+    let data: LoginResponse = {};
     try {
       data = await resp.json();
     } catch {
       console.log("Resposta não veio em JSON");
     }
+    // console.log("Resposta login:", data); // Descomentar caso precise debugar a resposta do servidor
 
-    console.log("Resposta login:", data);
-
-    const usuario = data?.usuario ?? data?.data?.usuario ?? null;
-    const token = data?.token ?? data?.data?.token ?? null;
+    const usuario = data?.usuario ?? data?.usuario ?? null;
+    const token = data?.token ?? data?.token ?? null;
 
     if (!resp.ok || !usuario?.idUsuario) {
-      setMensagem(data.message || 'E-mail ou senha incorretos.');
+      setMensagem('E-mail ou senha incorretos.');
       setSenha('');
       return;
     }
