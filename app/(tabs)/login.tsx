@@ -11,7 +11,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080'; // Substitua pelo URL do seu backend
+const API_URL = 'http://localhost:8080'; //Subistituir pelo seu ip
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -36,15 +36,21 @@ export default function LoginScreen() {
       body: JSON.stringify({ email, senha }),
     });
 
-    const data = await resp.json().catch(() => ({}));
+    let data = {};
+    try {
+      data = await resp.json();
+    } catch {
+      console.log("Resposta não veio em JSON");
+    }
 
-    const usuario = data?.data?.usuario ?? null;
-    const token = data?.data?.token ?? null;
+    console.log("Resposta login:", data);
+
+    const usuario = data?.usuario ?? data?.data?.usuario ?? null;
+    const token = data?.token ?? data?.data?.token ?? null;
 
     if (!resp.ok || !usuario?.idUsuario) {
       setMensagem(data.message || 'E-mail ou senha incorretos.');
       setSenha('');
-      setLoading(false);
       return;
     }
 
@@ -55,12 +61,15 @@ export default function LoginScreen() {
       ['usuarioTipo', usuario.tipoUsuario?.nomeTipoUsuario ?? ''],
       ['usuarioAtivo', String(usuario.ativo ?? '1')],
       ['token', token ?? ''],
-      ['@isLogged', 'true'], 
+      ['@isLogged', 'true'],
     ]);
 
     Alert.alert('Bem-vindo!', `Olá, ${usuario.nomeUsuario}!`);
-    router.replace('../(auth)/trilhas'); 
-    setMensagem('Erro ao conectar com o servidor. Verifique se o back-end está rodando.');
+    router.replace('../(auth)/trilhas');
+
+  } catch (err) {
+    console.error('Erro login:', err);
+    setMensagem('Erro ao conectar com o servidor.');
   } finally {
     setLoading(false);
   }
