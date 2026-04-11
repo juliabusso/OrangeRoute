@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const API_URL = '';
+const API_URL = 'http://localhost:8080';
 
 export default function CadastroScreen() {
   const [nomeUsuario, setNomeUsuario] = useState('');
@@ -13,24 +13,6 @@ export default function CadastroScreen() {
   const [carregandoTipos, setCarregandoTipos] = useState(true);
   const [mensagem, setMensagem] = useState('');
   const router = useRouter();
-
-  // Carrega tipos de usuário do backend
-  useEffect(() => {
-    const fetchTipos = async () => {
-      try {
-        const resp = await fetch(`${API_URL}/tipo-usuario`);
-        if (!resp.ok) throw new Error(`Erro HTTP ${resp.status}`);
-        const json = await resp.json();
-        setTipos(json.data ?? []);
-      } catch (err) {
-        console.error('Erro ao carregar tipos de usuário:', err);
-        setMensagem('Não foi possível carregar os tipos de usuário. Verifique a API.');
-      } finally {
-        setCarregandoTipos(false);
-      }
-    };
-    fetchTipos();
-  }, []);
 
   // ✅ Submissão do formulário
   const handleCadastro = async () => {
@@ -113,32 +95,7 @@ export default function CadastroScreen() {
         secureTextEntry
       />
 
-      <Text style={styles.label}>Tipo de Usuário</Text>
-      {carregandoTipos ? (
-        <ActivityIndicator color="#FF6B00" />
-      ) : (
-        <View style={styles.selectContainer}>
-          {tipos.map((t) => (
-            <TouchableOpacity
-              key={t.idTipoUsuario}
-              style={[
-                styles.option,
-                tipoUsuario === String(t.idTipoUsuario) && styles.optionSelected,
-              ]}
-              onPress={() => setTipoUsuario(String(t.idTipoUsuario))}
-            >
-              <Text
-                style={[
-                  styles.optionText,
-                  tipoUsuario === String(t.idTipoUsuario) && styles.optionTextSelected,
-                ]}
-              >
-                {t.nomeTipoUsuario}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+     
 
       {mensagem ? <Text style={styles.message}>{mensagem}</Text> : null}
 

@@ -11,7 +11,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://192.168.0.30:8080';
+const API_URL = 'http://localhost:8080'; // Substitua pelo URL do seu backend
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
