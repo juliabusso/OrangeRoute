@@ -2,24 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = 'http://localhost:8080'; //Subistituir pelo seu ip
 
 export default function CadastroScreen() {
   const [nomeUsuario, setNomeUsuario] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [tipoUsuario, setTipoUsuario] = useState('');
-  const [tipos, setTipos] = useState<{ idTipoUsuario: number; nomeTipoUsuario: string }[]>([]);
-  const [carregandoTipos, setCarregandoTipos] = useState(true);
   const [mensagem, setMensagem] = useState('');
   const router = useRouter();
 
   // ✅ Submissão do formulário
   const handleCadastro = async () => {
-    if (!nomeUsuario || !email || !senha || !tipoUsuario) {
-      setMensagem('Preencha todos os campos antes de continuar.');
-      return;
-    }
 
     if (senha.length < 8) {
       setMensagem('A senha deve ter no mínimo 8 caracteres.');
@@ -30,9 +23,11 @@ export default function CadastroScreen() {
       nomeUsuario,
       email,
       senha,
-      idTipoUsuario: Number(tipoUsuario),
+      idTipoUsuario: Number(2), //Id de tipo-usuario User padrão
     };
 
+    console.log(payload)
+    
     try {
       const resp = await fetch(`${API_URL}/usuario`, {
         method: 'POST',
