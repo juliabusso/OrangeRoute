@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+# OrangeRoute
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Video
+https://youtu.be/IIhD0bzcjJE
 
-## Get started
+Aplicativo que organiza e apresenta **trilhas de carreira e aprendizado** dentro do campo de **Desenvolvimento de Software**. O objetivo é ajudar estudantes e iniciantes a entenderem as principais áreas da tecnologia, quais competências são exigidas em cada uma e qual a sequência ideal de estudos para evoluir.
 
-1. Install dependencies
+## Descrição do problema escolhido
 
-   ```bash
-   npm install
-   ```
+Muitas pessoas que desejam entrar na área de tecnologia se deparam com dúvidas como:
 
-2. Start the app
+- Quais são as principais áreas do Desenvolvimento de Software (Front-end, Back-end, Mobile, DevOps, etc.)?
+- O que cada área faz no dia a dia e quais responsabilidades estão envolvidas?
+- Quais tecnologias e competências preciso aprender para começar?
+- Em que ordem devo estudar para não me perder?
+- Onde encontro cursos e materiais confiáveis?
 
-   ```bash
-   npx expo start
-   ```
+A falta de uma fonte centralizada e bem organizada torna a escolha de uma trilha de carreira mais difícil e aumenta a chance de frustração e abandono no início da jornada.
 
-In the output, you'll find options to open the app in a
+## Descrição geral da solução proposta
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+O **OrangeRoute** propõe um ambiente único para **explorar áreas e subáreas** do Desenvolvimento de Software, oferecendo:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. **Mapeamento das áreas e subáreas** (ex.: Front-end, Back-end, DevOps, Mobile, Ciência de Dados, Segurança da Informação, etc.).
+2. **Descrição das competências, tecnologias e responsabilidades** associadas a cada área, ajudando a entender o que é esperado no mercado.
+3. **Trilhas de aprendizado** com uma sequência sugerida de estudos para desenvolver as habilidades necessárias em cada categoria.
+4. **Indicações de cursos e materiais** (priorizando fontes confiáveis e reconhecidas) para facilitar o acesso ao conhecimento.
+5. **Interface intuitiva e acessível**, permitindo navegar de forma prática e visualmente agradável.
+6. **Apoio à escolha profissional**, conectando interesses e objetivos do usuário com as áreas mais alinhadas ao seu perfil.
+7. **Centralização de informações relevantes** sobre aprendizado e mercado de tecnologia, servindo como referência para iniciantes.
 
-## Get a fresh project
+## Tecnologias utilizadas
 
-When you're ready, run:
+- **React Native**
+- **Expo**
+- **TypeScript** (se aplicável ao projeto)
+- **Node.js / npm** (gerenciador de pacotes e scripts)
+
+## Instruções básicas para execução do projeto
+
+### Pré-requisitos
+
+- **Node.js** (recomendado: versão LTS)
+- **npm** (ou **yarn/pnpm**, se preferir)
+- **Expo Go** instalado no celular (opcional, para testar no dispositivo)
+
+### Instalação
 
 ```bash
-npm run reset-project
+npm install
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+-Subindo o servidor
+```bash
+npx espo start
