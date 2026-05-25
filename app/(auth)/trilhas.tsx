@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+
 import {
   View,
   Text,
@@ -7,76 +8,175 @@ import {
   ActivityIndicator,
   StyleSheet,
   Alert,
+  useColorScheme,
 } from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useRouter } from 'expo-router';
 
-type Trilha = {
-  idTrilhaCarreira: string;
-  tituloTrilha: string;
-  conteudoTrilha: string;
-};
+import { Colors } from '../../constants/theme';
+
+import {
+  useTrilhas,
+  Trilha,
+} from '../../hooks/useTrilhas';
 
 export default function TrilhasScreen() {
-  const [trilhas, setTrilhas] = useState<Trilha[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const router = useRouter();
 
-  const API_URL = '';
+  const colorScheme = useColorScheme();
+
+  const theme = Colors[colorScheme ?? 'light'];
+
+  const {
+    data: trilhas = [],
+    isLoading,
+    error,
+  } = useTrilhas();
 
   useEffect(() => {
-    const carregar = async () => {
-      try {
-        const resp = await fetch(API_URL);
-        if (!resp.ok) throw new Error(`Erro HTTP ${resp.status}`);
-        const json = await resp.json();
-        setTrilhas(json.data ?? []);
-      } catch (err) {
-        setError('Erro ao carregar trilhas');
-      } finally {
-        setLoading(false);
-      }
-    };
-    carregar();
+    verificarLogin();
   }, []);
 
-  const abrirTrilha = (id: string) => router.push(`../trilha/${id}`);
+  async function verificarLogin() {
+    const token = await AsyncStorage.getItem('token');
 
-  const icone = (titulo: string) => {
+    if (!token) {
+      Alert.alert(
+        'Sessão expirada',
+        'Faça login novamente'
+      );
+
+      router.replace('../(public)/login');
+    }
+  }
+
+  function abrirTrilha(id: string) {
+    router.push(`../trilha/${id}`);
+  }
+
+  function icone(titulo: string) {
     const t = titulo.toLowerCase();
-    if (t.includes('java')) return '☕';
-    if (t.includes('react')) return '⚛️';
-    if (t.includes('dados')) return '💾';
-    if (t.includes('design')) return '🎨';
-    if (t.includes('cloud')) return '☁️';
-    return '💻';
-  };
 
-  if (loading)
+    if (t.includes('java')) return '☕';
+
+    if (t.includes('react')) return '⚛️';
+
+    if (t.includes('dados')) return '💾';
+
+    if (t.includes('design')) return '🎨';
+
+    if (t.includes('cloud')) return '☁️';
+
+    return '💻';
+  }
+
+  if (isLoading) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#FF6B00" />
-        <Text style={{ marginTop: 10 }}>Carregando trilhas...</Text>
+      <View
+        style={[
+          styles.center,
+          {
+            backgroundColor: theme.background,
+          },
+        ]}
+      >
+        <ActivityIndicator
+          size="large"
+          color={theme.primary}
+        />
+
+        <Text
+          style={{
+            color: theme.text,
+            marginTop: 10,
+          }}
+        >
+          Carregando trilhas...
+        </Text>
       </View>
     );
+  }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.background,
+        },
+      ]}
+    >
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Trilhas de Carreira</Text>
+        <Text
+          style={[
+            styles.header,
+            {
+              color: theme.primary,
+            },
+          ]}
+        >
+          Trilhas de Carreira
+        </Text>
       </View>
 
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? (
+        <Text style={styles.error}>
+          Erro ao carregar trilhas
+        </Text>
+      ) : null}
 
-      {trilhas.map((t) => (
-        <View key={t.idTrilhaCarreira} style={styles.card}>
-          <Text style={styles.icone}>{icone(t.tituloTrilha)}</Text>
-          <Text style={styles.titulo}>{t.tituloTrilha}</Text>
-          <Text style={styles.descricao}>{t.conteudoTrilha}</Text>
+      {trilhas.map((t: Trilha) => (
+        <View
+          key={t.idTrilhaCarreira}
+          style={[
+            styles.card,
+            {
+              backgroundColor: theme.input,
+            },
+          ]}
+        >
+          <Text style={styles.icone}>
+            {icone(t.tituloTrilha)}
+          </Text>
 
-          <TouchableOpacity style={styles.botao} onPress={() => abrirTrilha(t.idTrilhaCarreira)}>
-            <Text style={styles.textoBotao}>Acessar Trilha</Text>
+          <Text
+            style={[
+              styles.titulo,
+              {
+                color: theme.text,
+              },
+            ]}
+          >
+            {t.tituloTrilha}
+          </Text>
+
+          <Text
+            style={[
+              styles.descricao,
+              {
+                color: theme.text,
+              },
+            ]}
+          >
+            {t.conteudoTrilha}
+          </Text>
+
+          <TouchableOpacity
+            style={[
+              styles.botao,
+              {
+                backgroundColor: theme.primary,
+              },
+            ]}
+            onPress={() =>
+              abrirTrilha(t.idTrilhaCarreira)
+            }
+          >
+            <Text style={styles.textoBotao}>
+              Acessar Trilha
+            </Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -85,38 +185,77 @@ export default function TrilhasScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, backgroundColor: '#FFF4E6' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  container: {
+    flex: 1,
+
+    padding: 16,
+  },
+
+  center: {
+    flex: 1,
+
+    justifyContent: 'center',
+
     alignItems: 'center',
+  },
+
+  headerContainer: {
     marginBottom: 16,
   },
-  header: { fontSize: 26, fontWeight: '700', color: '#FF6B00' },
-  logoutButton: {
-    backgroundColor: '#EF4444',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 8,
+
+  header: {
+    fontSize: 26,
+
+    fontWeight: '700',
   },
-  logoutText: { color: '#fff', fontWeight: '600' },
-  error: { color: '#EF4444', textAlign: 'center', marginTop: 16 },
+
+  error: {
+    color: '#EF4444',
+
+    textAlign: 'center',
+
+    marginTop: 16,
+  },
+
   card: {
-    backgroundColor: '#fff',
     borderRadius: 10,
+
     padding: 14,
+
     marginBottom: 14,
+
     elevation: 2,
   },
-  icone: { fontSize: 28, marginBottom: 6 },
-  titulo: { fontSize: 18, fontWeight: '700', marginBottom: 6 },
-  descricao: { color: '#475569', marginBottom: 10 },
+
+  icone: {
+    fontSize: 28,
+
+    marginBottom: 6,
+  },
+
+  titulo: {
+    fontSize: 18,
+
+    fontWeight: '700',
+
+    marginBottom: 6,
+  },
+
+  descricao: {
+    marginBottom: 10,
+  },
+
   botao: {
-    backgroundColor: '#FF6B00',
     paddingVertical: 10,
+
     borderRadius: 8,
+
     alignItems: 'center',
   },
-  textoBotao: { color: '#fff', fontWeight: '600' },
+
+  textoBotao: {
+    color: '#FFF',
+
+    fontWeight: '600',
+  },
 });

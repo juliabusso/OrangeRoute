@@ -19,7 +19,7 @@ export default function TrilhaScreen() {
   const [comentario, setComentario] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const API_URL = '';
+  const API_URL = 'https://orangeroute-oracle-production.up.railway.app';
 
   useEffect(() => {
     const carregar = async () => {

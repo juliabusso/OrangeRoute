@@ -1,6 +1,13 @@
 import { Stack } from 'expo-router';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 const Colors = {
   light: {
     background: '#FFF4E6',
@@ -15,12 +22,15 @@ export default function Layout() {
   const theme = Colors[colorScheme ?? 'light'];
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false, // oculta o header
-        contentStyle: { backgroundColor: theme.background }, // aplica a cor de fundo global
-      }}
-    >
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: theme.background,
+          },
+        }}
+      />
+    </QueryClientProvider>
   );
 }

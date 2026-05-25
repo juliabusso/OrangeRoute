@@ -1,101 +1,192 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+  useColorScheme,
+} from 'react-native';
+
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080'; //Subistituir pelo seu ip
+import { Colors } from '../../constants/theme';
+
+import { useCadastro } from '../../hooks/useCadastro';
 
 export default function CadastroScreen() {
-  const [nomeUsuario, setNomeUsuario] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
   const router = useRouter();
 
-  // ✅ Submissão do formulário
-  const handleCadastro = async () => {
+  const colorScheme = useColorScheme();
 
-    if (senha.length < 8) {
-      setMensagem('A senha deve ter no mínimo 8 caracteres.');
+  const theme = Colors[colorScheme ?? 'light'];
+
+  const [nomeUsuario, setNomeUsuario] = useState('');
+
+  const [email, setEmail] = useState('');
+
+  const [senha, setSenha] = useState('');
+
+  const cadastroMutation = useCadastro();
+
+  async function handleCadastro() {
+    if (!nomeUsuario || !email || !senha) {
+      Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
 
-    const payload = {
-      nomeUsuario,
-      email,
-      senha,
-      idTipoUsuario: Number(2), //Id de tipo-usuario User padrão
-    };
+    if (senha.length < 8) {
+      Alert.alert(
+        'Erro',
+        'A senha deve ter no mínimo 8 caracteres'
+      );
+      return;
+    }
 
-    console.log(payload)
-    
     try {
-      const resp = await fetch(`${API_URL}/usuario`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      await cadastroMutation.mutateAsync({
+        nomeUsuario,
+        email,
+        senha,
+        idTipoUsuario: 2,
       });
 
-      const data = await resp.json().catch(() => ({}));
+      Alert.alert(
+        'Sucesso',
+        'Usuário cadastrado com sucesso'
+      );
 
-      if (resp.ok && data.usuario?.idUsuario) {
-        Alert.alert('✅ Sucesso', `Usuário ${data.usuario.nomeUsuario} cadastrado com sucesso!`);
-        setTimeout(() => router.replace('./login'), 1500);
-        return;
-      }
-
-      const msgErro =
-        data.message ||
-        (resp.status === 409
-          ? 'E-mail já cadastrado.'
-          : resp.status === 400
-          ? 'Dados inválidos. Verifique os campos.'
-          : resp.status === 404
-          ? 'Tipo de usuário não encontrado.'
-          : `Erro ao cadastrar usuário (HTTP ${resp.status}).`);
-
-      setMensagem(msgErro);
-    } catch (err) {
-      console.error('Erro ao conectar com o servidor:', err);
-      setMensagem('Falha ao conectar com o servidor.');
+      router.replace('./login');
+    } catch (error: any) {
+      Alert.alert(
+        'Erro',
+        error.message || 'Erro ao cadastrar usuário'
+      );
     }
-  };
+  }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Criar Conta</Text>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        {
+          backgroundColor: theme.background,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.title,
+          {
+            color: theme.primary,
+          },
+        ]}
+      >
+        Criar Conta
+      </Text>
 
-      <Text style={styles.label}>Nome</Text>
+      <Text
+        style={[
+          styles.label,
+          {
+            color: theme.text,
+          },
+        ]}
+      >
+        Nome
+      </Text>
+
       <TextInput
-        style={styles.input}
-        placeholder="Digite seu nome..."
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.input,
+            borderColor: theme.border,
+            color: theme.text,
+          },
+        ]}
+        placeholder="Digite seu nome"
+        placeholderTextColor={theme.placeholder}
         value={nomeUsuario}
         onChangeText={setNomeUsuario}
       />
 
-      <Text style={styles.label}>E-mail</Text>
+      <Text
+        style={[
+          styles.label,
+          {
+            color: theme.text,
+          },
+        ]}
+      >
+        E-mail
+      </Text>
+
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.input,
+            borderColor: theme.border,
+            color: theme.text,
+          },
+        ]}
         placeholder="seu@email.com"
+        placeholderTextColor={theme.placeholder}
+        keyboardType="email-address"
+        autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
       />
 
-      <Text style={styles.label}>Senha</Text>
+      <Text
+        style={[
+          styles.label,
+          {
+            color: theme.text,
+          },
+        ]}
+      >
+        Senha
+      </Text>
+
       <TextInput
-        style={styles.input}
-        placeholder="Digite uma senha"
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.input,
+            borderColor: theme.border,
+            color: theme.text,
+          },
+        ]}
+        placeholder="Digite sua senha"
+        placeholderTextColor={theme.placeholder}
+        secureTextEntry
         value={senha}
         onChangeText={setSenha}
-        secureTextEntry
       />
 
-     
-
-      {mensagem ? <Text style={styles.message}>{mensagem}</Text> : null}
-
-      <TouchableOpacity style={styles.button} onPress={handleCadastro}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor: theme.primary,
+          },
+        ]}
+        onPress={handleCadastro}
+        disabled={cadastroMutation.isPending}
+      >
+        {cadastroMutation.isPending ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Text style={styles.buttonText}>
+            Cadastrar
+          </Text>
+        )}
       </TouchableOpacity>
     </ScrollView>
   );
@@ -105,74 +196,41 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 24,
-    backgroundColor: '#FFF4E6',
+    justifyContent: 'center',
   },
+
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#FF6B00',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
+
   label: {
+    fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    marginBottom: 8,
     marginTop: 10,
   },
+
   input: {
-    backgroundColor: '#fff',
-    borderColor: '#FF6B00',
     borderWidth: 1,
     borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 10,
-  },
-  selectContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     marginBottom: 12,
   },
-  option: {
-    borderColor: '#FF6B00',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
-  },
-  optionSelected: {
-    backgroundColor: '#FF6B00',
-  },
-  optionText: {
-    color: '#333',
-  },
-  optionTextSelected: {
-    color: '#fff',
-    fontWeight: '600',
-  },
+
   button: {
-    backgroundColor: '#FF6B00',
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 12,
   },
+
   buttonText: {
-    color: '#fff',
+    color: '#FFF',
     fontSize: 18,
-    fontWeight: '600',
-  },
-  link: {
-    color: '#FF6B00',
-    textAlign: 'center',
-    marginTop: 16,
-    fontWeight: '500',
-  },
-  message: {
-    color: 'red',
-    marginTop: 8,
-    textAlign: 'center',
+    fontWeight: '700',
   },
 });

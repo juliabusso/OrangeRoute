@@ -3,6 +3,13 @@ import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 const Colors = {
   light: {
     background: '#FFF4E6',
@@ -21,51 +28,53 @@ export default function AuthTabsLayout() {
   const theme = Colors[colorScheme ?? 'light'];
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: theme.active,
-        tabBarInactiveTintColor: theme.inactive,
-        tabBarStyle: {
-          backgroundColor: theme.background,
-          borderTopWidth: 0,
-          elevation: 5,
-          height: 60,
-        },
-        tabBarLabelStyle: {
-          fontSize: 13,
-          fontWeight: '600',
-          marginBottom: 6,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="trilhas"
-        options={{
-          title: 'Trilhas',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? 'map' : 'map-outline'}
-              size={24}
-              color={color}
-            />
-          ),
+    <QueryClientProvider client={queryClient}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: theme.active,
+          tabBarInactiveTintColor: theme.inactive,
+          tabBarStyle: {
+            backgroundColor: theme.background,
+            borderTopWidth: 0,
+            elevation: 5,
+            height: 60,
+          },
+          tabBarLabelStyle: {
+            fontSize: 13,
+            fontWeight: '600',
+            marginBottom: 6,
+          },
         }}
-      />
+      >
+        <Tabs.Screen
+          name="trilhas"
+          options={{
+            title: 'Trilhas',
+            tabBarIcon: ({ color, focused }) => (
+              <Ionicons
+                name={focused ? 'map' : 'map-outline'}
+                size={24}
+                color={color}
+              />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="perfil"
-        options={{
-          title: 'Perfil',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? 'person' : 'person-outline'}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="perfil"
+          options={{
+            title: 'Perfil',
+            tabBarIcon: ({ color, focused }) => (
+              <Ionicons
+                name={focused ? 'person' : 'person-outline'}
+                size={24}
+                color={color}
+              />
+            ),
+          }}
+        />
+      </Tabs>
+    </QueryClientProvider>
   );
 }

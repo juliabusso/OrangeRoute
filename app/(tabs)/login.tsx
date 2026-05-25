@@ -5,120 +5,142 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   ActivityIndicator,
+  Alert,
+  useColorScheme,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useRouter } from 'expo-router';
 
-const API_URL = 'http://localhost:8080'; //Subistituir pelo seu ip
+import { useLogin } from '../../hooks/useLogin';
+import { Colors } from '../../constants/theme';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [mensagem, setMensagem] = useState('');
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-type LoginResponse = {
-  token: string;
-  usuario: {
-    idUsuario: number;
-    nomeUsuario: string;
-    email: string;
-    ativo: string; 
-    tipoUsuario: {
-      idTipoUsuario: number;
-      nomeTipoUsuario: string;
-    };
-  };
-  message?: string;
-};
+  const colorScheme = useColorScheme();
 
-  const handleLogin = async () => {
-  if (!email || !senha) {
-    setMensagem('Preencha todos os campos.');
-    return;
-  }
+  const theme = Colors[colorScheme ?? 'light'];
 
-  setMensagem('');
-  setLoading(true);
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
 
-  try {
-    const resp = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha }),
-    });
+  const loginMutation = useLogin();
 
-    let data: LoginResponse = {};
-    try {
-      data = await resp.json();
-    } catch {
-      console.log("Resposta não veio em JSON");
-    }
-    // console.log("Resposta login:", data); // Descomentar caso precise debugar a resposta do servidor
-
-    const usuario = data?.usuario ?? data?.usuario ?? null;
-    const token = data?.token ?? data?.token ?? null;
-
-    if (!resp.ok || !usuario?.idUsuario) {
-      setMensagem('E-mail ou senha incorretos.');
-      setSenha('');
+  async function handleLogin() {
+    if (!email || !senha) {
+      Alert.alert('Erro', 'Preencha todos os campos');
       return;
     }
 
-    await AsyncStorage.multiSet([
-      ['usuarioId', String(usuario.idUsuario)],
-      ['usuarioNome', usuario.nomeUsuario ?? ''],
-      ['usuarioEmail', usuario.email ?? ''],
-      ['usuarioTipo', usuario.tipoUsuario?.nomeTipoUsuario ?? ''],
-      ['usuarioAtivo', String(usuario.ativo ?? '1')],
-      ['token', token ?? ''],
-      ['@isLogged', 'true'],
-    ]);
+    try {
+      await loginMutation.mutateAsync({
+        email,
+        senha,
+      });
 
-    Alert.alert('Bem-vindo!', `Olá, ${usuario.nomeUsuario}!`);
-    router.replace('../(auth)/trilhas');
+      Alert.alert('Sucesso', 'Login realizado com sucesso');
 
-  } catch (err) {
-    console.error('Erro login:', err);
-    setMensagem('Erro ao conectar com o servidor.');
-  } finally {
-    setLoading(false);
+      router.replace('../(auth)/trilhas');
+    } catch (error: any) {
+      Alert.alert(
+        'Erro',
+        error.message || 'E-mail ou senha inválidos'
+      );
+    }
   }
-};
-
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Entrar</Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.background,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.title,
+          {
+            color: theme.primary,
+          },
+        ]}
+      >
+        Entrar
+      </Text>
 
-      <Text style={styles.label}>E-mail</Text>
+      <Text
+        style={[
+          styles.label,
+          {
+            color: theme.text,
+          },
+        ]}
+      >
+        E-mail
+      </Text>
+
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.input,
+            borderColor: theme.border,
+            color: theme.text,
+          },
+        ]}
         placeholder="Digite seu e-mail"
+        placeholderTextColor={theme.placeholder}
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
       />
 
-      <Text style={styles.label}>Senha</Text>
+      <Text
+        style={[
+          styles.label,
+          {
+            color: theme.text,
+          },
+        ]}
+      >
+        Senha
+      </Text>
+
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            backgroundColor: theme.input,
+            borderColor: theme.border,
+            color: theme.text,
+          },
+        ]}
         placeholder="Digite sua senha"
+        placeholderTextColor={theme.placeholder}
         secureTextEntry
         value={senha}
         onChangeText={setSenha}
       />
 
-      {mensagem ? <Text style={styles.message}>{mensagem}</Text> : null}
-
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Entrar</Text>}
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor: theme.primary,
+          },
+        ]}
+        onPress={handleLogin}
+        disabled={loginMutation.isPending}
+      >
+        {loginMutation.isPending ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Text style={styles.buttonText}>Entrar</Text>
+        )}
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -126,52 +148,41 @@ type LoginResponse = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
     justifyContent: 'center',
-    backgroundColor: '#FFF4E6',
+    padding: 24,
   },
+
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '700',
-    color: '#FF6B00',
     textAlign: 'center',
     marginBottom: 32,
   },
+
   label: {
+    fontSize: 16,
     fontWeight: '600',
-    color: '#333',
-    marginTop: 10,
+    marginBottom: 8,
   },
+
   input: {
-    backgroundColor: '#fff',
-    borderColor: '#FF6B00',
     borderWidth: 1,
     borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginBottom: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 16,
   },
+
   button: {
-    backgroundColor: '#FF6B00',
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 10,
   },
+
   buttonText: {
-    color: '#fff',
+    color: '#FFF',
     fontSize: 18,
-    fontWeight: '600',
-  },
-  link: {
-    color: '#FF6B00',
-    textAlign: 'center',
-    marginTop: 16,
-    fontWeight: '500',
-  },
-  message: {
-    color: 'red',
-    marginTop: 8,
-    textAlign: 'center',
+    fontWeight: '700',
   },
 });
